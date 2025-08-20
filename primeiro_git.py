@@ -1,3 +1,2 @@
-print("Olá, Github!")
-print("Meu segundo commit" \
-"")
+print("Ola, Github!")
+print("Meu segundo commit")
