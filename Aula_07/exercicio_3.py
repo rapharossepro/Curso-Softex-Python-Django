@@ -16,7 +16,9 @@ import time
 
 print("--- Ola, esse e o menu de controle do robo, escolha uma das opcoes a seguir: ---\n")
 time.sleep(1.5)
+
 position = 0
+
 while True:
 
     print("(1) Avancar\n")
@@ -27,33 +29,36 @@ while True:
     time.sleep(0.2)
     print("(4) Desligar\n\b")
     time.sleep(0.2)
-
-    opcao = [1, 2, 3, 4]
     
 
-    opcao = int(input(""))
-    if opcao == 1:
-        time.sleep(2)
-        print("\nAvançando...")
+    opcao = input("")
+    if opcao == "1":
+        time.sleep(0.2)
+        print("\nAvançando...\n")
         position += 1
-        time.sleep(2)
-    elif opcao == 2:
-        time.sleep(2)
-        print("\nRecuando...")
+        time.sleep(0.2)
+    elif opcao == "2":
+        time.sleep(0.2)
+        print("\nRecuando...\n")
         position -= 1
-        time.sleep(2)
-    elif opcao == 3:
-        print("\nLoading...")
-        time.sleep(2.5)
-        print(f"\nPosição atual: {position}")
-    elif opcao == 4:
+        time.sleep(0.2)
+    elif opcao == "3":
+        print("\nLoading...\n")
+        time.sleep(1.5)
+        print(f"\nPosição atual: {position}\n")
+    elif opcao == "4":
         print("\nDesligando o robô...")
-        time.sleep(1)
+        time.sleep(1.2)
         print("\nDesligando o robô..")
-        time.sleep(1)
+        time.sleep(1.2)
         print("\nDesligando o robô.")
+        time.sleep(1.2)
+        print("\nAte logo! :)\n")
         break
     else:
+        time.sleep(1.2)
         print("\nOpcao invalida...\n")
+        time.sleep(1.2)
+
 
 
