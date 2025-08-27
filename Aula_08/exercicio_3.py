@@ -21,6 +21,6 @@ print(frase_codificada)
 print(frase_decodificada)
 
 
-        
+## Tentar com if com += para substituir em cada index
 
 
