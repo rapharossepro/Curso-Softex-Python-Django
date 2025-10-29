@@ -19,7 +19,7 @@ retangulo5 = Retangulo(7, 5)
 lista_retangulos = [retangulo1, retangulo2, retangulo3, retangulo4, retangulo5]
 
 for i, ret in enumerate(lista_retangulos, start=1):
-    print(f"Retângulo {i}:")
+    print(f"  Retângulo {i}:")
     print(f"  Base: {ret.base}")
     print(f"  Altura: {ret.altura}")
     print(f"  Área: {ret.calcular_area()}")

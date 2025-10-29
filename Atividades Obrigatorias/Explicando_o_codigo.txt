@@ -1,4 +1,3 @@
-explicacao = """\
 Explicação do código e suas ações em ordem de execução
 ------------------------------------------------------
 
