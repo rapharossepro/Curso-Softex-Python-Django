@@ -1,0 +1,53 @@
+Explicação do Código – Sistema de Notificações Corporativo
+
+Este código implementa um sistema simples de envio de notificações usando os quatro pilares da Programação Orientada a Objetos. A ideia é permitir que a aplicação envie alertas por diferentes canais (E-mail, SMS etc.) sem precisar reescrever tudo no futuro.
+
+1. Classe Usuario – Encapsulamento em ação
+
+A classe Usuario representa a pessoa que vai receber os alertas.
+O atributo nome é público, mas o email é privado (__email) para evitar acessos diretos.
+Foram criados um getter e um setter para controlar o acesso ao e-mail. O setter verifica se o e-mail contém “@”, e se não tiver, ele simplesmente recusa e avisa o erro. Isso protege o sistema contra atributos inválidos.
+
+2. Classe CanalEnvio – A base abstrata
+
+A classe CanalEnvio funciona como molde para qualquer forma de envio.
+Ela possui o método enviar(), mas ele não faz nada além de lançar um erro (NotImplementedError).
+Isso obriga qualquer classe filha (como Email ou SMS) a implementar sua própria lógica de envio. Assim, ninguém esquece de escrever o método.
+
+3. Classes Email e SMS – Herança e Polimorfismo
+
+As classes Email e SMS herdam de CanalEnvio e sobrescrevem o método enviar().
+Cada uma imprime uma mensagem diferente quando o envio acontece.
+Aqui entra o polimorfismo: o sistema chama .enviar() sem precisar saber qual é o tipo do canal. Cada classe se vira para fazer o seu trabalho.
+
+4. Classe SistemaAlerta – Composição
+
+A classe SistemaAlerta é o “gerente” do sistema.
+Ela recebe um objeto Usuario e um objeto de canal (Email, SMS etc.).
+No método disparar(), ela só pega o nome do usuário e chama o método .enviar() do canal configurado.
+Ou seja, o sistema se adapta ao canal escolhido sem quebrar o restante do código.
+
+5. Testes realizados
+
+Criamos um usuário e testamos a validação do e-mail.
+Quando tentamos colocar um e-mail sem "@", o sistema recusou.
+Depois trocamos para um e-mail válido e funcionou.
+
+Testamos o envio por E-mail.
+O sistema usou o canal Email e enviou a mensagem normalmente.
+
+Testamos o SMS usando exatamente o mesmo usuário.
+Só trocamos o canal e criamos um novo SistemaAlerta.
+Sem alterar mais nada, o sistema enviou a mensagem por SMS, comprovando o polimorfismo.
+
+🎯 Resumo final
+
+O código demonstra claramente:
+
+Encapsulamento
+
+Herança
+
+Polimorfismo
+
+Composição

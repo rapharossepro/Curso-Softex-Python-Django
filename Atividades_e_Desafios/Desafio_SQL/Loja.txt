@@ -1,0 +1,195 @@
+O código constrói um pequeno sistema de vendas composto por clientes, produtos, pedidos e itens de pedido. É basicamente a estrutura típica de um e-commerce simplificado.
+A seguir, cada parte é detalhada.
+
+1. Ativação de chaves estrangeiras
+PRAGMA foreign_keys = ON;
+
+
+O SQLite, por padrão, não ativa Foreign Keys.
+Esse comando liga o suporte a integridade referencial — essencial para impedir cadastros inválidos, como:
+
+pedido sem cliente
+
+item apontando para produto inexistente
+
+2. Tabela Clientes
+CREATE TABLE Clientes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+);
+
+
+O que faz:
+
+id: chave primária autoincrementada.
+
+nome: obrigatório.
+
+email: obrigatório e único (não podem existir dois iguais).
+
+Representa os compradores do sistema.
+
+3. Tabela Produtos
+CREATE TABLE Produtos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT,
+    preco REAL,
+    estoque INTEGER
+);
+
+
+Armazena produtos disponíveis.
+
+preco usa REAL porque SQLite não possui DECIMAL verdadeiro.
+
+estoque controla quantidade disponível.
+
+4. Tabela Pedidos
+CREATE TABLE Pedidos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data_compra TEXT DEFAULT (datetime('now')),
+    total REAL,
+    id_cliente INTEGER,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+);
+
+
+Cada pedido pertence a um cliente.
+
+data_compra é gerada automaticamente com o horário atual.
+
+total armazena o valor total do pedido.
+
+id_cliente cria a relação com a tabela Clientes.
+
+5. Tabela Itens_Pedido
+CREATE TABLE Itens_Pedido (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_pedido INTEGER,
+    id_produto INTEGER,
+    quantidade INTEGER,
+    FOREIGN KEY (id_pedido) REFERENCES Pedidos(id),
+    FOREIGN KEY (id_produto) REFERENCES Produtos(id)
+);
+
+
+Essa tabela liga Pedidos a Produtos.
+
+Um pedido pode ter vários produtos → isso é um relacionamento 1-n.
+Cada linha diz:
+
+qual pedido
+
+qual produto
+
+quantas unidades desse produto
+
+6. Inserindo dados iniciais
+Clientes
+INSERT INTO Clientes (nome, email) VALUES
+('Joao', 'joao@example.com'),
+('Maria', 'maria@example.com'),
+('Ana', 'ana@example.com');
+
+
+Cria 3 clientes de exemplo.
+
+Produtos
+INSERT INTO Produtos (nome, preco, estoque) VALUES
+('Teclado', 150.00, 50),
+('Mouse', 80.00, 100),
+('Monitor', 900.00, 20);
+
+
+Três produtos cadastrados, com preço e estoque inicial.
+
+7. Criando um pedido para Maria
+INSERT INTO Pedidos (total, id_cliente) VALUES
+(310.00, 2);
+
+
+Maria tem id = 2.
+O pedido será dela.
+
+8. Adicionando itens ao pedido
+INSERT INTO Itens_Pedido (id_pedido, id_produto, quantidade) 
+VALUES 
+(1, 1, 1),
+(1, 2, 2);
+
+
+Pedido 1:
+
+1 teclado (produto 1)
+
+2 mouses (produto 2)
+
+9. Consultas
+Produtos acima de 100 reais
+SELECT nome, preco 
+FROM Produtos 
+WHERE preco > 100.00;
+
+
+Simples filtro.
+
+Dados dos pedidos da Maria
+SELECT 
+    c.nome AS Nome_Cliente,
+    p.id AS ID_Pedido,
+    p.data_compra
+FROM Pedidos p
+JOIN Clientes c ON p.id_cliente = c.id
+WHERE c.nome = 'Maria';
+
+
+Traz:
+
+nome do cliente
+
+id do pedido
+
+data
+
+Usa JOIN para ligar pedido ao cliente.
+
+10. Atualizando preço do Mouse
+UPDATE Produtos 
+SET preco = preco * 1.10 
+WHERE nome = 'Mouse';
+
+
+Aumenta 10% do preço.
+
+11. Atualizando estoque após a compra
+UPDATE Produtos 
+SET estoque = estoque - 2 
+WHERE nome = 'Mouse';
+
+
+Reduz estoque — simula a venda.
+
+12. Removendo um item do pedido
+DELETE FROM Itens_Pedido 
+WHERE id_pedido = 1 AND id_produto = 1;
+
+
+Remove o teclado do pedido 1.
+É útil para casos em que o cliente altera o carrinho.
+
+Resumo final
+
+Esse código cria um mini-sistema completo:
+
+✔ Clientes
+✔ Produtos
+✔ Pedidos
+✔ Itens por pedido
+✔ Integridade referencial
+✔ Consultas reais de operação
+✔ Atualização de estoque
+✔ Aumento de preço
+✔ Remoção de itens
+
+É exatamente a base de um ERP, e-commerce ou qualquer sistema de gestão.
